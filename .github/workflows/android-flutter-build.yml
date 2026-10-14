@@ -100,6 +100,14 @@ jobs:
           distribution: temurin
           java-version: "17"
 
+      - name: Create project Python venv
+        shell: pwsh
+        run: |
+          python -m venv .venv
+          & ".\.venv\Scripts\python.exe" -m pip install --upgrade pip
+          & ".\.venv\Scripts\python.exe" -c "print('venv python ready')"
+          (Resolve-Path .\.venv\Scripts).Path | Out-File -FilePath $env:GITHUB_PATH -Append -Encoding utf8
+
       - name: Install FVM
         shell: pwsh
         run: |
