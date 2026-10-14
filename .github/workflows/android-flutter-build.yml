@@ -107,6 +107,11 @@ jobs:
           & ".\.venv\Scripts\python.exe" -m pip install --upgrade pip
           & ".\.venv\Scripts\python.exe" -c "print('venv python ready')"
           (Resolve-Path .\.venv\Scripts).Path | Out-File -FilePath $env:GITHUB_PATH -Append -Encoding utf8
+          npm install --prefix .ci-tools/typescript --no-audit --no-fund typescript@5.9.3
+          if (-not (Test-Path -LiteralPath .ci-tools\typescript\node_modules\.bin\tsc.cmd)) {
+            throw "Repository-managed TypeScript compiler was not installed"
+          }
+          Write-Host "tsc ready"
 
       - name: Install FVM
         shell: pwsh
