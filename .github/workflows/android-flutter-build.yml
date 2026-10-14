@@ -114,6 +114,16 @@ jobs:
           Write-Host "tsc ready"
 
       - name: Install built-in workflow plugin dependencies
+        shell: pwsh
+        run: |
+          # The workflow package's pack:toolpkg script shells out to a bare
+          # `pnpm`, so the pinned packageManager version must be on PATH.
+          # corepack enable writes shims next to the Node binary (not the cwd).
+          corepack enable
+          corepack prepare pnpm@10.7.0 --activate
+          pnpm --version
+
+      - name: Install workflow plugin node_modules
         working-directory: plugins/packages/buildin/workflow
         shell: pwsh
         run: |
