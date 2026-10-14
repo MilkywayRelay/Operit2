@@ -113,6 +113,16 @@ jobs:
           }
           Write-Host "tsc ready"
 
+      - name: Install built-in workflow plugin dependencies
+        working-directory: plugins/packages/buildin/workflow
+        shell: pwsh
+        run: |
+          corepack pnpm install --frozen-lockfile
+          if (-not (Test-Path -LiteralPath node_modules\typescript)) {
+            throw "workflow plugin node_modules (typescript/esbuild/fflate) missing"
+          }
+          Write-Host "workflow plugin deps ready"
+
       - name: Install FVM
         shell: pwsh
         run: |
